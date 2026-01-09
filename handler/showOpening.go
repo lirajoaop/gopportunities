@@ -19,6 +19,7 @@ func ShowOpeningHandler(ctx *gin.Context) {
 
 	if err := db.First(&opening, id).Error; err != nil {
 		sendError(ctx, http.StatusNotFound, "opening not found")
+		return
 	}
 
 	sendSuccess(ctx, "show-opening", opening)
