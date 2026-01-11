@@ -7,6 +7,18 @@ import (
 	"github.com/lirajoaop/gopportunities/schemas"
 )
 
+// @Summary Update opening
+// @Description Update a job opening by ID
+// @Tags Opening
+// @Accept json
+// @Produce json
+// @Param id query string true "Opening ID"
+// @Param request body UpdateOpeningRequest true "Request Body"
+// @Success 200 {object} CreateOpeningResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /opening [put]
 func UpdateOpeningHandler(ctx *gin.Context) {
 	request := UpdateOpeningRequest{}
 

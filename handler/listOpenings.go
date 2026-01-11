@@ -7,6 +7,14 @@ import (
 	"github.com/lirajoaop/gopportunities/schemas"
 )
 
+// @Summary List all openings
+// @Description Get all job openings
+// @Tags Opening
+// @Accept json
+// @Produce json
+// @Success 200 {object} ListOpeningsResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /openings [get]
 func ListOpeningsHandler(ctx *gin.Context) {
 	openings := []schemas.Opening{}
 
