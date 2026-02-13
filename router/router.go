@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/lirajoaop/gopportunities/config"
 )
 
 func Initialize() {
@@ -11,7 +12,7 @@ func Initialize() {
 
 	//Add CORS middleware
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3002", "http://localhost:3000"},
+		AllowOrigins:     config.GetCORSOrigins(),
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		AllowCredentials: true,
@@ -21,5 +22,5 @@ func Initialize() {
 	initializeRoutes(router)
 
 	//Run server
-	router.Run("127.0.0.1:8080")
+	router.Run(config.GetPort())
 }
