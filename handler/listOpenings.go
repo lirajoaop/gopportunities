@@ -23,5 +23,10 @@ func ListOpeningsHandler(ctx *gin.Context) {
 		return
 	}
 
-	sendSuccess(ctx, "list-openings", openings)
+	response := make([]schemas.OpeningResponse, len(openings))
+	for i, opening := range openings {
+		response[i] = opening.ToResponse()
+	}
+
+	sendSuccess(ctx, "list-openings", response)
 }

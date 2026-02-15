@@ -16,6 +16,26 @@ type Opening struct {
 	Salary   int64
 }
 
+func (o *Opening) ToResponse() OpeningResponse {
+	var deletedAt *time.Time
+	if o.DeletedAt.Valid {
+		deletedAt = &o.DeletedAt.Time
+	}
+
+	return OpeningResponse{
+		ID:        o.ID,
+		CreatedAt: o.CreatedAt,
+		UpdatedAt: o.UpdatedAt,
+		DeletedAt: deletedAt,
+		Role:      o.Role,
+		Company:   o.Company,
+		Location:  o.Location,
+		Remote:    o.Remote,
+		Link:      o.Link,
+		Salary:    o.Salary,
+	}
+}
+
 type OpeningResponse struct {
 	ID        uint       `json:"id" example:"1"`
 	CreatedAt time.Time  `json:"createdAt" example:"2024-01-01T00:00:00Z"`
