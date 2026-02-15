@@ -1,11 +1,9 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lirajoaop/gopportunities/schemas"
 )
 
 // @Summary Delete opening
@@ -27,16 +25,10 @@ func DeleteOpeningHandler(ctx *gin.Context) {
 		return
 	}
 
-	opening := schemas.Opening{}
-	// Find Opening
-	if err := db.First(&opening, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, fmt.Sprintf("opening with id: %s not found", id))
-		return
-	}
-
-	// Delete Opening
-	if err := db.Delete(&opening).Error; err != nil {
-		sendError(ctx, http.StatusInternalServerError, fmt.Sprintf("error deleting opening with id: %s", id))
+	opening, err := openingService.DeleteOpening(id)
+	if err != nil {
+		logger.Errorf("error deleting opening: %v", err.Error())
+		sendError(ctx, http.StatusNotFound, err.Error())
 		return
 	}
 

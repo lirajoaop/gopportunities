@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lirajoaop/gopportunities/schemas"
 )
 
 // @Summary Update opening
@@ -37,37 +36,13 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 		return
 	}
 
-	opening := schemas.Opening{}
-
-	if err := db.First(&opening, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, "opening not found")
-		return
-	}
-
-	// Update Opening
-	if request.Role != "" {
-		opening.Role = request.Role
-	}
-	if request.Company != "" {
-		opening.Company = request.Company
-	}
-	if request.Location != "" {
-		opening.Location = request.Location
-	}
-	if request.Remote != nil {
-		opening.Remote = *request.Remote
-	}
-	if request.Link != "" {
-		opening.Link = request.Link
-	}
-	if request.Salary > 0 {
-		opening.Salary = request.Salary
-	}
-
-	// Save changes
-	if err := db.Save(&opening).Error; err != nil {
+	opening, err := openingService.UpdateOpening(
+		id, request.Role, request.Company, request.Location,
+		request.Link, request.Remote, request.Salary,
+	)
+	if err != nil {
 		logger.Errorf("error updating opening: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, "error updating opening")
+		sendError(ctx, http.StatusNotFound, err.Error())
 		return
 	}
 

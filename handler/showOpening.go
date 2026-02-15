@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lirajoaop/gopportunities/schemas"
 )
 
 // @Summary Show opening
@@ -25,10 +24,9 @@ func ShowOpeningHandler(ctx *gin.Context) {
 		return
 	}
 
-	opening := schemas.Opening{}
-
-	if err := db.First(&opening, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, "opening not found")
+	opening, err := openingService.GetOpeningByID(id)
+	if err != nil {
+		sendError(ctx, http.StatusNotFound, err.Error())
 		return
 	}
 
