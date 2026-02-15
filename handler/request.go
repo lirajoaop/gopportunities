@@ -8,12 +8,12 @@ func errParamIsRequired(name, typ string) error {
 
 // CreateOpening
 type CreateOpeningRequest struct {
-	Role     string `json:"role"`
-	Company  string `json:"company"`
-	Location string `json:"location"`
-	Remote   *bool  `json:"remote"`
-	Link     string `json:"link"`
-	Salary   int64  `json:"salary"`
+	Role     string `json:"role" example:"Backend Developer"`
+	Company  string `json:"company" example:"Google"`
+	Location string `json:"location" example:"Remote"`
+	Remote   *bool  `json:"remote" example:"true"`
+	Link     string `json:"link" example:"https://google.com/careers/123"`
+	Salary   int64  `json:"salary" example:"120000"`
 }
 
 func (r *CreateOpeningRequest) Validate() error {
@@ -45,12 +45,12 @@ func (r *CreateOpeningRequest) Validate() error {
 
 // UpdateOpening
 type UpdateOpeningRequest struct {
-	Role     string `json:"role"`
-	Company  string `json:"company"`
-	Location string `json:"location"`
-	Remote   *bool  `json:"remote"`
-	Link     string `json:"link"`
-	Salary   int64  `json:"salary"`
+	Role     string `json:"role" example:"Senior Backend Developer"`
+	Company  string `json:"company" example:"Google"`
+	Location string `json:"location" example:"Lisbon, Portugal"`
+	Remote   *bool  `json:"remote" example:"true"`
+	Link     string `json:"link" example:"https://google.com/careers/456"`
+	Salary   int64  `json:"salary" example:"150000"`
 }
 
 func (r *UpdateOpeningRequest) Validate() error {

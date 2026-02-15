@@ -3,16 +3,22 @@ definitions:
   handler.CreateOpeningRequest:
     properties:
       company:
+        example: Google
         type: string
       link:
+        example: https://google.com/careers/123
         type: string
       location:
+        example: Remote
         type: string
       remote:
+        example: true
         type: boolean
       role:
+        example: Backend Developer
         type: string
       salary:
+        example: 120000
         type: integer
     type: object
   handler.CreateOpeningResponse:
@@ -20,6 +26,7 @@ definitions:
       data:
         $ref: '#/definitions/schemas.OpeningResponse'
       message:
+        example: operation create-opening successful
         type: string
     type: object
   handler.DeleteOpeningResponse:
@@ -27,13 +34,16 @@ definitions:
       data:
         $ref: '#/definitions/schemas.OpeningResponse'
       message:
+        example: operation delete-opening successful
         type: string
     type: object
   handler.ErrorResponse:
     properties:
       errorCode:
-        type: string
+        example: 400
+        type: integer
       message:
+        example: error message
         type: string
     type: object
   handler.ListOpeningsResponse:
@@ -43,6 +53,7 @@ definitions:
           $ref: '#/definitions/schemas.OpeningResponse'
         type: array
       message:
+        example: operation list-openings successful
         type: string
     type: object
   handler.ShowOpeningResponse:
@@ -50,112 +61,96 @@ definitions:
       data:
         $ref: '#/definitions/schemas.OpeningResponse'
       message:
+        example: operation show-opening successful
         type: string
     type: object
   handler.UpdateOpeningRequest:
     properties:
       company:
+        example: Google
         type: string
       link:
+        example: https://google.com/careers/456
         type: string
       location:
+        example: Lisbon, Portugal
         type: string
       remote:
+        example: true
         type: boolean
       role:
+        example: Senior Backend Developer
         type: string
       salary:
+        example: 150000
         type: integer
+    type: object
+  handler.UpdateOpeningResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.OpeningResponse'
+      message:
+        example: operation update-opening successful
+        type: string
     type: object
   schemas.OpeningResponse:
     properties:
       company:
+        example: Google
         type: string
       createdAt:
+        example: "2024-01-01T00:00:00Z"
         type: string
       deletedAt:
         type: string
       id:
+        example: 1
         type: integer
       link:
+        example: https://google.com/careers/123
         type: string
       location:
+        example: Remote
         type: string
       remote:
+        example: true
         type: boolean
       role:
+        example: Backend Developer
         type: string
       salary:
+        example: 120000
         type: integer
       updatedAt:
+        example: "2024-01-01T00:00:00Z"
         type: string
     type: object
-host: localhost:8080
 info:
-  contact: {}
-  description: API to manage job opportunities
+  contact:
+    name: João Pedro Lira
+    url: https://github.com/lirajoaop/gopportunities
+  description: API to manage job opportunities, including creating, listing, updating,
+    and deleting job openings.
   title: Go Opportunities API
   version: "1.0"
 paths:
-  /opening:
-    delete:
+  /openings:
+    get:
       consumes:
       - application/json
-      description: Delete a job opening by ID
-      parameters:
-      - description: Opening ID
-        in: query
-        name: id
-        required: true
-        type: string
+      description: Get all job openings
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.DeleteOpeningResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/handler.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/handler.ErrorResponse'
+            $ref: '#/definitions/handler.ListOpeningsResponse'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/handler.ErrorResponse'
-      summary: Delete opening
-      tags:
-      - Opening
-    get:
-      consumes:
-      - application/json
-      description: Get a job opening by ID
-      parameters:
-      - description: Opening ID
-        in: query
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/handler.ShowOpeningResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/handler.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/handler.ErrorResponse'
-      summary: Show opening
+      summary: List all openings
       tags:
       - Opening
     post:
@@ -187,13 +182,74 @@ paths:
       summary: Create opening
       tags:
       - Opening
+  /openings/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a job opening by ID
+      parameters:
+      - description: Opening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.DeleteOpeningResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Delete opening
+      tags:
+      - Opening
+    get:
+      consumes:
+      - application/json
+      description: Get a job opening by ID
+      parameters:
+      - description: Opening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.ShowOpeningResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Show opening
+      tags:
+      - Opening
     put:
       consumes:
       - application/json
       description: Update a job opening by ID
       parameters:
       - description: Opening ID
-        in: query
+        in: path
         name: id
         required: true
         type: string
@@ -209,7 +265,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.CreateOpeningResponse'
+            $ref: '#/definitions/handler.UpdateOpeningResponse'
         "400":
           description: Bad Request
           schema:
@@ -225,23 +281,7 @@ paths:
       summary: Update opening
       tags:
       - Opening
-  /openings:
-    get:
-      consumes:
-      - application/json
-      description: Get all job openings
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/handler.ListOpeningsResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/handler.ErrorResponse'
-      summary: List all openings
-      tags:
-      - Opening
+schemes:
+- http
+- https
 swagger: "2.0"

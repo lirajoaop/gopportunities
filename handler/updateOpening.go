@@ -12,13 +12,13 @@ import (
 // @Tags Opening
 // @Accept json
 // @Produce json
-// @Param id query string true "Opening ID"
+// @Param id path string true "Opening ID"
 // @Param request body UpdateOpeningRequest true "Request Body"
-// @Success 200 {object} CreateOpeningResponse
+// @Success 200 {object} UpdateOpeningResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /opening [put]
+// @Router /openings/{id} [put]
 func UpdateOpeningHandler(ctx *gin.Context) {
 	request := UpdateOpeningRequest{}
 
@@ -30,10 +30,10 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 		return
 	}
 
-	id := ctx.Query("id")
+	id := ctx.Param("id")
 
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "queryParameter").Error())
+		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "pathParameter").Error())
 		return
 	}
 

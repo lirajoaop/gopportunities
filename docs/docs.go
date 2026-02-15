@@ -9,15 +9,18 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "João Pedro Lira",
+            "url": "https://github.com/lirajoaop/gopportunities"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/opening": {
+        "/openings": {
             "get": {
-                "description": "Get a job opening by ID",
+                "description": "Get all job openings",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,84 +30,12 @@ const docTemplate = `{
                 "tags": [
                     "Opening"
                 ],
-                "summary": "Show opening",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Opening ID",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
+                "summary": "List all openings",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handler.ShowOpeningResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handler.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/handler.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update a job opening by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Opening"
-                ],
-                "summary": "Update opening",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Opening ID",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "description": "Request Body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handler.UpdateOpeningRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/handler.CreateOpeningResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handler.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/handler.ErrorResponse"
+                            "$ref": "#/definitions/handler.ListOpeningsResponse"
                         }
                     },
                     "500": {
@@ -158,6 +89,107 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/openings/{id}": {
+            "get": {
+                "description": "Get a job opening by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Opening"
+                ],
+                "summary": "Show opening",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Opening ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ShowOpeningResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a job opening by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Opening"
+                ],
+                "summary": "Update opening",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Opening ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request Body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.UpdateOpeningRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.UpdateOpeningResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    }
+                }
             },
             "delete": {
                 "description": "Delete a job opening by ID",
@@ -176,7 +208,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Opening ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -207,35 +239,6 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/openings": {
-            "get": {
-                "description": "Get all job openings",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Opening"
-                ],
-                "summary": "List all openings",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/handler.ListOpeningsResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/handler.ErrorResponse"
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -243,22 +246,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "company": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Google"
                 },
                 "link": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://google.com/careers/123"
                 },
                 "location": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Remote"
                 },
                 "remote": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Backend Developer"
                 },
                 "salary": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 120000
                 }
             }
         },
@@ -269,7 +278,8 @@ const docTemplate = `{
                     "$ref": "#/definitions/schemas.OpeningResponse"
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "operation create-opening successful"
                 }
             }
         },
@@ -280,7 +290,8 @@ const docTemplate = `{
                     "$ref": "#/definitions/schemas.OpeningResponse"
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "operation delete-opening successful"
                 }
             }
         },
@@ -288,10 +299,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "errorCode": {
-                    "type": "string"
+                    "type": "integer",
+                    "example": 400
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "error message"
                 }
             }
         },
@@ -305,7 +318,8 @@ const docTemplate = `{
                     }
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "operation list-openings successful"
                 }
             }
         },
@@ -316,7 +330,8 @@ const docTemplate = `{
                     "$ref": "#/definitions/schemas.OpeningResponse"
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "operation show-opening successful"
                 }
             }
         },
@@ -324,22 +339,40 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "company": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Google"
                 },
                 "link": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://google.com/careers/456"
                 },
                 "location": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Lisbon, Portugal"
                 },
                 "remote": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Senior Backend Developer"
                 },
                 "salary": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 150000
+                }
+            }
+        },
+        "handler.UpdateOpeningResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/schemas.OpeningResponse"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "operation update-opening successful"
                 }
             }
         },
@@ -347,34 +380,43 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "company": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Google"
                 },
                 "createdAt": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00Z"
                 },
                 "deletedAt": {
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "link": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://google.com/careers/123"
                 },
                 "location": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Remote"
                 },
                 "remote": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Backend Developer"
                 },
                 "salary": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 120000
                 },
                 "updatedAt": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00Z"
                 }
             }
         }
@@ -384,11 +426,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "",
 	BasePath:         "/api/v1",
-	Schemes:          []string{},
+	Schemes:          []string{"http", "https"},
 	Title:            "Go Opportunities API",
-	Description:      "API to manage job opportunities",
+	Description:      "API to manage job opportunities, including creating, listing, updating, and deleting job openings.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

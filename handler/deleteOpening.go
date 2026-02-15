@@ -13,17 +13,17 @@ import (
 // @Tags Opening
 // @Accept json
 // @Produce json
-// @Param id query string true "Opening ID"
+// @Param id path string true "Opening ID"
 // @Success 200 {object} DeleteOpeningResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /opening [delete]
+// @Router /openings/{id} [delete]
 func DeleteOpeningHandler(ctx *gin.Context) {
-	id := ctx.Query("id")
+	id := ctx.Param("id")
 
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "queryParameter").Error())
+		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "pathParameter").Error())
 		return
 	}
 

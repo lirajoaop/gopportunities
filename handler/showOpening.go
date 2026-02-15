@@ -12,16 +12,16 @@ import (
 // @Tags Opening
 // @Accept json
 // @Produce json
-// @Param id query string true "Opening ID"
+// @Param id path string true "Opening ID"
 // @Success 200 {object} ShowOpeningResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /opening [get]
+// @Router /openings/{id} [get]
 func ShowOpeningHandler(ctx *gin.Context) {
-	id := ctx.Query("id")
+	id := ctx.Param("id")
 
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "queryParameter").Error())
+		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "pathParameter").Error())
 		return
 	}
 
