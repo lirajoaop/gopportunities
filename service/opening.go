@@ -3,15 +3,24 @@ package service
 import (
 	"fmt"
 
-	"github.com/lirajoaop/gopportunities/repository"
 	"github.com/lirajoaop/gopportunities/schemas"
 )
 
-type OpeningService struct {
-	repo *repository.OpeningRepository
+// OpeningRepository is the persistence contract the service depends on.
+// It is satisfied by *repository.OpeningRepository and by test fakes.
+type OpeningRepository interface {
+	Create(opening *schemas.Opening) error
+	FindByID(id string) (*schemas.Opening, error)
+	FindAll() ([]schemas.Opening, error)
+	Save(opening *schemas.Opening) error
+	Delete(opening *schemas.Opening) error
 }
 
-func NewOpeningService(repo *repository.OpeningRepository) *OpeningService {
+type OpeningService struct {
+	repo OpeningRepository
+}
+
+func NewOpeningService(repo OpeningRepository) *OpeningService {
 	return &OpeningService{repo: repo}
 }
 

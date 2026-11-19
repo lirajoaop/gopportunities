@@ -1,5 +1,7 @@
 # Go Opportunities
 
+[![CI](https://github.com/lirajoaop/gopportunities/actions/workflows/ci.yml/badge.svg)](https://github.com/lirajoaop/gopportunities/actions/workflows/ci.yml)
+
 ## Overview
 
 Go Opportunities is a RESTful API for managing job openings, built with Go, Gin, GORM and PostgreSQL. The project follows a layered architecture (Handler → Service → Repository) with Swagger documentation.
@@ -78,6 +80,17 @@ make docs         # generates Swagger docs only
 docker build -t gopportunities .
 docker run -p 8080:8080 --env-file .env gopportunities
 ```
+
+### Running tests
+
+The tests don't need a database: the service layer is tested against an in-memory fake repository, and the HTTP handlers are tested with `httptest` against a fake service.
+
+```bash
+make test         # go test -race -cover ./...
+go vet ./...
+```
+
+CI runs `gofmt`, `go vet` and the test suite on every push and pull request to `main`.
 
 ## API Endpoints
 
