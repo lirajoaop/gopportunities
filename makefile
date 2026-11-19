@@ -13,7 +13,7 @@ run-with-docs :
 build :
 	@go build -o $(APP_NAME) main.go
 test :
-	@go test ./...
+	@go test -race -cover ./...
 docs :
 	@swag init
 clean:
